@@ -1,7 +1,6 @@
-package com.mygdx.visualecho.base;
+package com.mygdx.game.base;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.MathUtils;
@@ -15,9 +14,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Intersector.MinimumTranslationVector;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
  *  Extend the Actor class to include graphics and collision detection.
@@ -127,9 +124,23 @@ public class ActorBeta extends Actor {
         TextureRegion tr = animation.getKeyFrame(0);
         float w = tr.getRegionWidth();
         float h = tr.getRegionHeight();
-
         setSize(w, h);
-        setOrigin(w / 2, h / 2);
+        //setOrigin(w / 2, h / 2);
+    }
+
+    public void setAnimation(Animation<TextureRegion> anim, boolean loop)
+    {
+        elapsedTime = 0;
+        animation = anim;
+        TextureRegion tr = animation.getKeyFrame(0);
+        float w = tr.getRegionWidth();
+        float h = tr.getRegionHeight();
+        setSize(w, h);
+        //setOrigin(w / 2, h / 2);
+        if (loop)
+            anim.setPlayMode(Animation.PlayMode.LOOP);
+        else
+            anim.setPlayMode(Animation.PlayMode.NORMAL);
     }
 
     /* Animation methods for multiple images */
@@ -343,8 +354,7 @@ public class ActorBeta extends Actor {
      * @param height
      */
 
-    public void wrapAroundWorld()
-    {
+    public void wrapAroundWorld(){
         if (getX() + getWidth() < 0)
             setX( worldBounds.width );
 

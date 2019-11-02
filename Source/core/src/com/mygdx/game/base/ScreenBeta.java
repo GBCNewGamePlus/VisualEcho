@@ -1,4 +1,4 @@
-package com.mygdx.visualecho.base;
+package com.mygdx.game.base;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
@@ -6,28 +6,14 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.graphics.g2d.NinePatch;
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
-import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 /**
  * Created by markapptist on 2018-10-16.
@@ -35,77 +21,20 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public abstract class ScreenBeta implements Screen, InputProcessor {
 
-    protected Stage mainStage;
+    protected static float WIDTH = Gdx.graphics.getWidth();
+    protected static float HEIGHT = Gdx.graphics.getHeight();
 
-    //UI
-
-    //STAGE
-    protected Stage uiStage;
-
-    //TABLE TO ORGANIZE LAYOUT
-    Table uiTable;
-
-    //LABEL
-    Label label;
-    LabelStyle labelStyle;
-
-    //BUTTON
-    Button button;
-    ButtonStyle buttonStyle;
-    Texture buttonTex;
-    TextureRegion buttonRegion;
-
-    //SOUNDS
-    Music defaultBackgroundMusic;
-    Sound defaultSoundEffect;
-
-    //BOOLEANS
+    public String transitionTo;
+    protected Stage st;
+    protected Music defaultBackgroundMusic;
+    protected Sound defaultSoundEffect;
     boolean isPaused;
 
-    int score;
-
-    //CONSTRUCTOR
-    ScreenBeta()
+    public ScreenBeta()
     {
-
         isPaused = false;
-
-        mainStage = new Stage();
-        uiStage = new Stage();
-
-        /***
-         * TODO: USE THE TABLE BELOW TO SET THE BUTTONS ON BOTH START SCREEN AND GAME SCREEN
-         */
-
-        uiTable = new Table();
-        uiTable.setFillParent(true);
-        uiTable.align(Align.center);
-        uiStage.addActor(uiTable);
-
-        //FONTS
-
-        //INITIALIZE A DEFAULT BUTTON
-        buttonStyle = new ButtonStyle();
-        button = new Button(buttonStyle);
-        button.setTransform(true);
-
-        //INITIALIZE A LABEL
-
-        uiStage.addActor(button);
-        uiStage.addActor(label);
-
-        //INITIALIZE TABLE
-        /**
-         * TODO: PLAY WITH THE TABLE UNTIL THINGS ARE ALIGNED PROPERLY ON BOTH SCREENS
-         */
-        uiTable.padTop(30);
-        uiTable.add(button).padBottom(100);
-        uiTable.row();
-        uiTable.add(label);
-
+        st = new Stage();
         initialize();
-
-
     }
 
     public abstract void initialize();
@@ -116,16 +45,12 @@ public abstract class ScreenBeta implements Screen, InputProcessor {
      */
     @Override
     public void show() {
-
         //GET the InputMultiplexer
         InputMultiplexer im = (InputMultiplexer)Gdx.input.getInputProcessor();
-
         //Add InputProcessor to the screen
         im.addProcessor(this);
-
         //Add InputProcessor to the stage
-        im.addProcessor(mainStage);
-        im.addProcessor(uiStage);
+        im.addProcessor(st);
     }
 
     /**
@@ -135,53 +60,39 @@ public abstract class ScreenBeta implements Screen, InputProcessor {
      */
     @Override
     public void hide() {
-
         //Get InputProcessor
         InputMultiplexer im = (InputMultiplexer)Gdx.input.getInputProcessor();
-
         //Remove InputProcessor
         im.removeProcessor(this);
-        im.removeProcessor(mainStage);
-        im.removeProcessor(uiStage);
+        im.removeProcessor(st);
     }
 
     @Override
     public void resume() {
-
+        isPaused = false;
     }
 
     @Override
-    public void pause() {
+    public void pause() {isPaused = true;}
 
-    }
+    public boolean isPaused(){return isPaused;}
 
     public abstract void update(float dt);
 
     @Override
     public void render(float delta) {
-
-        score++;
-
         //PAUSE LOGIC
         if(isPaused)
             delta = 0;
         else {
             delta = Math.min(delta, 1/30.0f);
         }
-
-        mainStage.act(delta);
-        uiStage.act(delta);
-
-        update(delta);
-        mainStage.setDebugAll(true);
-
+        st.act(delta);
+        update(delta); // whooosh
+        st.setDebugAll(true);
         Gdx.gl.glClearColor(0, 0.5f, 0.5f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        mainStage.draw();
-        uiStage.draw();
-
-        uiTable.setDebug(true);
+        st.draw();
     }
 
     public boolean isTouchDownEvent(Event e) {
@@ -190,12 +101,10 @@ public abstract class ScreenBeta implements Screen, InputProcessor {
 
     @Override
     public void resize(int width, int height) {
-
     }
 
     @Override
     public void dispose() {
-
     }
 
     @Override
@@ -205,19 +114,16 @@ public abstract class ScreenBeta implements Screen, InputProcessor {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-
         return false;
     }
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-
         return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-
         return false;
     }
 
@@ -240,4 +146,14 @@ public abstract class ScreenBeta implements Screen, InputProcessor {
     public boolean scrolled(int amount) {
         return false;
     }
+
+    public Drawable GetButtonDrawable(String fileName){
+        // Trying to avoid using LibGDX Skins at all costs
+        Texture texture = new Texture(Gdx.files.internal(fileName));
+        texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        TextureRegion textureRegion = new TextureRegion(texture);
+        Drawable valueToReturn = new TextureRegionDrawable(textureRegion);
+        return valueToReturn;
+    }
+
 }

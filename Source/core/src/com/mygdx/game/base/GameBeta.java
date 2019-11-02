@@ -1,4 +1,4 @@
-package com.mygdx.visualecho.base;
+package com.mygdx.game.base;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -12,11 +12,12 @@ public abstract class GameBeta extends Game {
         game = this;
     }
 
+    public int currentScene = 0;
+
     @Override
     public void create()
     {
         InputMultiplexer im = new InputMultiplexer();
-
         Gdx.input.setInputProcessor( im );
     }
 
@@ -24,4 +25,6 @@ public abstract class GameBeta extends Game {
     {
         game.setScreen(s);
     }
+
+    protected abstract void resetScene(int finalScene);
 }
