@@ -82,6 +82,11 @@ public class ActorBeta extends Actor {
 
     }
 
+    public float getElapsedTime()
+    {
+        return elapsedTime;
+    }
+
     public void setTexture(Texture t) {
         textureRegion.setRegion(t);
         this.setSize(t.getWidth(), t.getHeight());
@@ -120,6 +125,7 @@ public class ActorBeta extends Actor {
     /* Animation methods */
 
     public void setAnimation(Animation<TextureRegion> anim) {
+        elapsedTime = 0;
         animation = anim;
         TextureRegion tr = animation.getKeyFrame(0);
         float w = tr.getRegionWidth();
