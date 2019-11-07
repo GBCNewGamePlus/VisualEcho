@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
@@ -24,6 +25,8 @@ public abstract class ScreenBeta implements Screen, InputProcessor {
     protected static float WIDTH = Gdx.graphics.getWidth();
     protected static float HEIGHT = Gdx.graphics.getHeight();
 
+    Skin formSkin;
+
     public String transitionTo;
     protected Stage st;
     protected Music defaultBackgroundMusic;
@@ -34,6 +37,7 @@ public abstract class ScreenBeta implements Screen, InputProcessor {
     {
         isPaused = false;
         st = new Stage();
+        formSkin = new Skin(Gdx.files.internal("Skin/Quantum UI SCF.json"));
         initialize();
     }
 
