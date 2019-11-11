@@ -47,9 +47,9 @@ public class VisualEchoGame extends GameBeta
 		gameResultsScreen = new GameResults();
 
 		// Sets the first scene
-		currentScene = 0;
+		currentScene = 2;
 
-		setActiveScreen(splashScreen);
+		setActiveScreen(songSelectionScreen);
 	}
 
 	@Override
