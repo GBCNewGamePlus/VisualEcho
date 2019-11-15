@@ -24,6 +24,7 @@ public class VisualEchoGame extends GameBeta
 	GameResults gameResultsScreen;
 	Gameplay gameplayScreen;
 
+
 	static final int SPLASH = 0;
 	static final int TITLE = 1;
 	static final int SONG_SELECTION = 2;

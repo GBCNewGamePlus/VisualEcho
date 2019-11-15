@@ -43,6 +43,7 @@ public class ActorBeta extends Actor {
         super();
         textureRegion = new TextureRegion();
         rectangle = new Rectangle();
+        //rectangle.
         animation = null;
         elapsedTime = 0;
         animationPaused = false;

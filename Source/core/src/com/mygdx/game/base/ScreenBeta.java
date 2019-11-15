@@ -25,19 +25,18 @@ public abstract class ScreenBeta implements Screen, InputProcessor {
     protected static float WIDTH = Gdx.graphics.getWidth();
     protected static float HEIGHT = Gdx.graphics.getHeight();
 
-    Skin formSkin;
-
     public String transitionTo;
+
     protected Stage st;
-    protected Music defaultBackgroundMusic;
-    protected Sound defaultSoundEffect;
+    protected Skin sk;
+
     boolean isPaused;
 
     public ScreenBeta()
     {
         isPaused = false;
         st = new Stage();
-        formSkin = new Skin(Gdx.files.internal("Skin/Quantum UI SCF.json"));
+        sk = new Skin(Gdx.files.internal("Skin/Quantum UI SCF.json"));
         initialize();
     }
 
@@ -93,7 +92,7 @@ public abstract class ScreenBeta implements Screen, InputProcessor {
         }
         st.act(delta);
         update(delta); // whooosh
-        st.setDebugAll(true);
+        st.setDebugAll(false);
         Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         st.draw();
