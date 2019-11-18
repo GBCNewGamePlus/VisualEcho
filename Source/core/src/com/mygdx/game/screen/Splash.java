@@ -14,7 +14,6 @@ public final class Splash extends ScreenBeta {
 
     Logo gameTitle;
 
-    Music slap;
     Music soundTrack;
 
     boolean startedMusic = false;
@@ -23,10 +22,10 @@ public final class Splash extends ScreenBeta {
     public void initialize() {
         groupLogo = new Logo(0, 0, st, WIDTH, HEIGHT, "Splash/NGPlusLogo.png");
         gameTitle = new Logo(0, 0, st, WIDTH, HEIGHT, "Splash/VisualEchoLogo.PNG");
+
         soundTrack = Gdx.audio.newMusic(Gdx.files.internal("Splash/CyberIntro.mp3"));
         soundTrack.setVolume(0.3f);
         soundTrack.setLooping(false);
-        soundTrack.play();
 
         groupNameLabel = new Label("NewGamePlus presents", sk);
         groupNameLabel.setFontScale(1.5f);
@@ -38,6 +37,7 @@ public final class Splash extends ScreenBeta {
     public void show()
     {
         super.show();
+        soundTrack.play();
         gameTitle.addAction(Actions.fadeOut(0));
         groupNameLabel.addAction(Actions.fadeOut(0));
         RunnableAction run = new RunnableAction();
@@ -72,4 +72,9 @@ public final class Splash extends ScreenBeta {
             transitionTo = "Title";
         }
     }
+
+    @Override
+    public void hide(){
+    }
+
 }

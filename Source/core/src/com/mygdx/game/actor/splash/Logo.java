@@ -9,16 +9,14 @@ public final class Logo extends ActorBeta {
         // Setup basic stuff
         super(x, y, s);
         loadTexture(texturePath);//"Title/TitleScreen.jpg"
-
+        float originalWidth = getWidth();
+        float originalHeight = getHeight();
         setOrigin(Align.center);
 
         // Defines the largest ratio to cover the screen
-        float ratioX = sizeX/this.getWidth();
-        float ratioY = sizeY/this.getHeight();
+        float ratioX = sizeX/originalWidth;
+        float ratioY = sizeY/originalHeight;
         float finalScale = (ratioX < ratioY) ? ratioX:ratioY;
-
-        float originalHeight = getHeight();
-        float originalWidth = getWidth();
 
         setHeight(originalHeight * finalScale);
         setWidth(originalWidth * finalScale);

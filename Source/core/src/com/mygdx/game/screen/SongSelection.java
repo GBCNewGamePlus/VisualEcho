@@ -18,6 +18,7 @@ public final class SongSelection extends ScreenBeta {
     @Override
     public void initialize() {
         Quantum = new Skin(Gdx.files.internal("Skin/Quantum UI SCF.json"));
+        /*
         for (int i = 0; i < songHolder.length; i++){
             songTitle[i] = new Button(Quantum);
             songTitle[i].setStyle(Quantum.get("default",Button.ButtonStyle.class));
@@ -54,7 +55,7 @@ public final class SongSelection extends ScreenBeta {
             });
             st.addActor(expertDifficulty[i]);
 
-        }
+        }*/
     }
 
     @Override
