@@ -56,7 +56,6 @@ public class VisualEchoGame extends GameBeta
 	@Override
 	public void render()
 	{
-		super.render();
 		switch (currentScene){
 			case SPLASH:
 				/* Current Scene: Splash
@@ -139,6 +138,8 @@ public class VisualEchoGame extends GameBeta
 				}
 				break;
 		}
+		// Renders only after changing the scene
+		super.render();
 	}
 
 	@Override
