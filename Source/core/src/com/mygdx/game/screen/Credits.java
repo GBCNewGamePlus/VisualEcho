@@ -25,11 +25,11 @@ public final class Credits extends ScreenBeta {
         title = new Label("Credits", sk);
         title.setFontScale(3.0f);
         programmer1= new Label("Brody Paterson Mulligan", sk);
-        programmer1.setFontScale(2.0f);;
+        programmer1.setFontScale(2.0f);
         programmer2= new Label("Ekin Karayalcin", sk);
-        programmer2.setFontScale(2.0f);;
+        programmer2.setFontScale(2.0f);
         programmer3= new Label("Ricardo Shimoda Nakasako", sk);
-        programmer3.setFontScale(2.0f);;
+        programmer3.setFontScale(2.0f);
 
         back = new TextButton("Back", sk);
 
