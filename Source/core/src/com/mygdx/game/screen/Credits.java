@@ -9,13 +9,13 @@ import com.mygdx.game.base.ScreenBeta;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 public final class Credits extends ScreenBeta {
-    Table mainContent;
-    TextButton back;
-    ChangeListener backListener;
-    Label title;
-    Label programmer1;
-    Label programmer2;
-    Label programmer3;
+    private Table mainContent;
+    private TextButton back;
+    private ChangeListener backListener;
+    private Label title;
+    private Label programmer1;
+    private Label programmer2;
+    private Label programmer3;
 
     @Override
     public void initialize() {

@@ -13,19 +13,19 @@ import com.mygdx.game.base.ScreenBeta;
 import java.util.Random;
 
 public final class Title extends ScreenBeta {
-    Table mainContent;
-    GameLogo gameLogo;
+    private Table mainContent;
+    private GameLogo gameLogo;
 
-    TextButton songList;
-    ChangeListener songListListener;
+    private TextButton songList;
+    private ChangeListener songListListener;
 
-    TextButton settings;
-    ChangeListener settingsListener;
+    private TextButton settings;
+    private ChangeListener settingsListener;
 
-    TextButton credits;
-    ChangeListener creditsListener;
+    private TextButton credits;
+    private ChangeListener creditsListener;
 
-    Music soundTrack;
+    private Music soundTrack;
 
 
     @Override

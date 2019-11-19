@@ -13,15 +13,15 @@ import com.badlogic.gdx.utils.Align;
 import com.mygdx.game.base.ScreenBeta;
 
 public final class Settings extends ScreenBeta {
-    Table mainContent;
-    TextButton back;
-    ChangeListener backListener;
-    Label title;
-    Label vibrationLabel;
-    Label latencyLabel;
-    CheckBox vibration;
-    TextField latency;
-    Preferences prefs;
+    private Table mainContent;
+    private TextButton back;
+    private ChangeListener backListener;
+    private Label title;
+    private Label vibrationLabel;
+    private Label latencyLabel;
+    private CheckBox vibration;
+    private TextField latency;
+    private Preferences prefs;
     boolean vibrationSetting = true;
     float latencySetting = 0.0f;
 
@@ -29,9 +29,7 @@ public final class Settings extends ScreenBeta {
     public void initialize() {
         float padTableItems = HEIGHT/30.0f;
         prefs = Gdx.app.getPreferences("VisualEchoPreferences");
-        /*
-        prefs.putString("Player", playerName);
-        prefs.flush();*/
+
         // Table elements
         title = new Label("Settings", sk);
         title.setFontScale(3.0f);

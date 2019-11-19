@@ -9,14 +9,11 @@ import com.mygdx.game.actor.splash.Logo;
 import com.mygdx.game.base.ScreenBeta;
 
 public final class Splash extends ScreenBeta {
-    Logo groupLogo;
-    Label groupNameLabel;
-
-    Logo gameTitle;
-
-    Music soundTrack;
-
-    boolean startedMusic = false;
+    private Logo groupLogo;
+    private Label groupNameLabel;
+    private Logo gameTitle;
+    private Music soundTrack;
+    private boolean startedMusic = false;
 
     @Override
     public void initialize() {

@@ -48,9 +48,8 @@ public class VisualEchoGame extends GameBeta
 		gameResultsScreen = new GameResults();
 
 		// Sets the first scene
-		currentScene = TITLE;
-
-		setActiveScreen(titleScreen);
+		currentScene = GAME_RESULTS;
+		setActiveScreen(gameResultsScreen);
 	}
 
 	@Override
@@ -105,9 +104,9 @@ public class VisualEchoGame extends GameBeta
 				/* Current Scene: Gameplay
 				 * Transitions from Gameplay to Gameresults
 				 */
-				if(gameplayScreen.transitionTo == "Gameplay"){
-					resetScene(GAMEPLAY);
-					setActiveScreen(gameplayScreen);
+				if(gameplayScreen.transitionTo == "GameResults"){
+					resetScene(GAME_RESULTS);
+					setActiveScreen(gameResultsScreen);
 				}
 				break;
 			case GAME_RESULTS:
@@ -117,7 +116,11 @@ public class VisualEchoGame extends GameBeta
 				if(gameResultsScreen.transitionTo == "SongSelection"){
 					resetScene(SONG_SELECTION);
 					setActiveScreen(songSelectionScreen);
+				}else if(gameResultsScreen.transitionTo == "Gameplay"){
+					resetScene(GAMEPLAY);
+					setActiveScreen(gameplayScreen);
 				}
+
 				break;
 			case SETTINGS:
 				/* Current Scene: Settings
