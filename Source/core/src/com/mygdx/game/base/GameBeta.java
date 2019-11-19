@@ -12,7 +12,7 @@ public abstract class GameBeta extends Game {
         game = this;
     }
 
-    public int currentScene = 0;
+    public static int currentScene = 0;
 
     @Override
     public void create()

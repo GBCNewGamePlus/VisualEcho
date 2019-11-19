@@ -1,13 +1,16 @@
-package com.mygdx.game.actor.splash;
+package com.mygdx.game.actor.gameResults;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Align;
 import com.mygdx.game.base.ActorBeta;
 
-public final class Logo extends ActorBeta {
-    public Logo (float x, float y, Stage s, float sizeX, float sizeY, String texturePath) {
+public final class FinalImage extends ActorBeta {
+    public FinalImage (float x, float y, Stage s, float sizeX, float sizeY, String texturePath) {
         // Setup basic stuff
         super(x, y, s);
+        loadTexture(texturePath);//"Title/TitleScreen.jpg"
+
+        // Defines the largest ratio to cover the screen
         loadTexture(texturePath);//"Title/TitleScreen.jpg"
         float originalWidth = getWidth();
         float originalHeight = getHeight();

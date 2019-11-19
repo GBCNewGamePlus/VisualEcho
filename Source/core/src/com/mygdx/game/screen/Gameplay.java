@@ -13,6 +13,8 @@ public class Gameplay extends ScreenBeta
     private float timer, spawnRate;
     private float WIDTH, HEIGHT;
     private Random random;
+    private int MAXSPAWN = 5;
+    private int spawnCounter = 0;
 
     @Override
     public void initialize()
@@ -24,6 +26,12 @@ public class Gameplay extends ScreenBeta
         note = new Note(100,100, st);
         note.Spawn();
         random = new Random();
+    }
+
+    @Override
+    public void show() {
+        super.show();
+        spawnCounter = 0;
     }
 
     @Override
@@ -58,10 +66,24 @@ public class Gameplay extends ScreenBeta
         timer += dt;
         if (timer >= spawnRate)
         {
-            note.setX(random.nextFloat() * (WIDTH - note.getWidth()));
-            note.setY(random.nextFloat() * (HEIGHT - note.getHeight()));
-            note.Spawn();
-            timer = 0;
+            if(spawnCounter > MAXSPAWN)
+            {
+                transitionTo = "GameResults";
+            }
+            else{
+                note.setX(random.nextFloat() * (WIDTH - note.getWidth()));
+                note.setY(random.nextFloat() * (HEIGHT - note.getHeight()));
+                note.Spawn();
+                timer = 0;
+                spawnCounter++;
+            }
         }
     }
+
+    @Override
+    public void hide() {
+        super.hide();
+        spawnCounter = 0;
+    }
+
 }

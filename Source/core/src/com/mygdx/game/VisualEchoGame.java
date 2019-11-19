@@ -24,6 +24,7 @@ public class VisualEchoGame extends GameBeta
 	GameResults gameResultsScreen;
 	Gameplay gameplayScreen;
 
+
 	static final int SPLASH = 0;
 	static final int TITLE = 1;
 	static final int SONG_SELECTION = 2;
@@ -47,15 +48,13 @@ public class VisualEchoGame extends GameBeta
 		gameResultsScreen = new GameResults();
 
 		// Sets the first scene
-		currentScene = 2;
-
-		setActiveScreen(songSelectionScreen);
+		currentScene = SPLASH;
+		setActiveScreen(splashScreen);
 	}
 
 	@Override
 	public void render()
 	{
-		super.render();
 		switch (currentScene){
 			case SPLASH:
 				/* Current Scene: Splash
@@ -105,9 +104,9 @@ public class VisualEchoGame extends GameBeta
 				/* Current Scene: Gameplay
 				 * Transitions from Gameplay to Gameresults
 				 */
-				if(gameplayScreen.transitionTo == "Gameplay"){
-					resetScene(GAMEPLAY);
-					setActiveScreen(gameplayScreen);
+				if(gameplayScreen.transitionTo == "GameResults"){
+					resetScene(GAME_RESULTS);
+					setActiveScreen(gameResultsScreen);
 				}
 				break;
 			case GAME_RESULTS:
@@ -117,7 +116,11 @@ public class VisualEchoGame extends GameBeta
 				if(gameResultsScreen.transitionTo == "SongSelection"){
 					resetScene(SONG_SELECTION);
 					setActiveScreen(songSelectionScreen);
+				}else if(gameResultsScreen.transitionTo == "Gameplay"){
+					resetScene(GAMEPLAY);
+					setActiveScreen(gameplayScreen);
 				}
+
 				break;
 			case SETTINGS:
 				/* Current Scene: Settings
@@ -138,6 +141,8 @@ public class VisualEchoGame extends GameBeta
 				}
 				break;
 		}
+		// Renders only after changing the scene
+		super.render();
 	}
 
 	@Override
