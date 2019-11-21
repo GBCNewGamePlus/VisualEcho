@@ -18,7 +18,7 @@ public final class Splash extends ScreenBeta {
     @Override
     public void initialize() {
         groupLogo = new Logo(0, 0, st, WIDTH, HEIGHT, "Splash/NGPlusLogo.png");
-        gameTitle = new Logo(0, 0, st, WIDTH, HEIGHT, "Splash/VisualEchoLogo.PNG");
+        gameTitle = new Logo(0, 0, st, WIDTH, HEIGHT, "Splash/VisualEcho.png");
 
         soundTrack = Gdx.audio.newMusic(Gdx.files.internal("Splash/CyberIntro.mp3"));
         soundTrack.setVolume(0.3f);
