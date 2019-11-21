@@ -72,6 +72,7 @@ public final class Splash extends ScreenBeta {
 
     @Override
     public void hide(){
+        super.hide();
     }
 
 }
