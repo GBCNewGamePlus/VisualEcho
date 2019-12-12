@@ -23,15 +23,20 @@ public final class Credits extends ScreenBeta {
 
         // Table elements
         title = new Label("Credits", sk);
-        title.setFontScale(3.0f);
+        title.setFontScale(4.0f);
         programmer1= new Label("Brody Paterson Mulligan", sk);
-        programmer1.setFontScale(2.0f);
+        programmer1.setFontScale(2.5f);
         programmer2= new Label("Ekin Karayalcin", sk);
-        programmer2.setFontScale(2.0f);
+        programmer2.setFontScale(2.5f);
         programmer3= new Label("Ricardo Shimoda Nakasako", sk);
-        programmer3.setFontScale(2.0f);
+        programmer3.setFontScale(2.5f);
 
         back = new TextButton("Back", sk);
+        float originalWidthBK = back.getWidth();
+        float originalHeightBK = back.getHeight();
+        float rateBK = 0.15f * (HEIGHT/originalHeightBK);
+        back.getLabel().setFontScale(rateBK,rateBK);
+
 
         // Table
         mainContent = new Table();
@@ -50,7 +55,7 @@ public final class Credits extends ScreenBeta {
         mainContent.add(programmer3).padBottom(3*padTableItems);
         mainContent.row();
 
-        mainContent.add(back);
+        mainContent.add(back).height(originalHeightBK*rateBK).width(originalWidthBK*rateBK);
 
         st.addActor(mainContent);
         mainContent.setDebug(false);

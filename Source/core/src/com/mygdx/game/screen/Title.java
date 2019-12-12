@@ -38,31 +38,40 @@ public final class Title extends ScreenBeta {
 
         songList = new TextButton("Song List", sk);
         songList.setTransform(true);
-        songList.setScale(2);
+        float originalWidthSL = songList.getWidth();
+        float originalHeightSL = songList.getHeight();
+        float rateSL = 0.2f * (HEIGHT/originalHeightSL);
+        songList.getLabel().setFontScale(rateSL,rateSL);
 
         settings = new TextButton("Settings", sk);
         settings.setTransform(true);
-        settings.setScale(2);
+        float originalWidthST = settings.getWidth();
+        float originalHeightST = settings.getHeight();
+        float rateST = 0.15f * (HEIGHT/originalHeightST);
+        settings.getLabel().setFontScale(rateST,rateST);
 
         credits = new TextButton("Credits", sk);
         credits.setTransform(true);
-        credits.setScale(2);
+        float originalWidthCR = credits.getWidth();
+        float originalHeightCR = credits.getHeight();
+        float rateCR = 0.15f * (HEIGHT/originalHeightCR);
+        credits.getLabel().setFontScale(rateCR,rateCR);
 
         // Table
         mainContent = new Table();
         mainContent.setOrigin(Align.top);
         mainContent.setPosition(WIDTH/2,HEIGHT/2);
+        mainContent.center();
 
-        mainContent.add(gameLogo).padBottom(2*padTableItems);
+        mainContent.add(gameLogo).colspan(2).padBottom(padTableItems);
         mainContent.row();
 
-        mainContent.add(songList).padBottom(padTableItems);
+        mainContent.add(songList.center()).colspan(2).padBottom(2*padTableItems).height(originalHeightSL*rateSL).width(originalWidthSL*rateSL);
         mainContent.row();
 
-        mainContent.add(settings).padBottom(padTableItems);
-        mainContent.row();
+        mainContent.add(settings).height(originalHeightST*rateST).width(originalWidthST*rateST).center();
+        mainContent.add(credits).height(originalHeightCR*rateCR).width(originalWidthCR*rateCR).center();
 
-        mainContent.add(credits);
 
         st.addActor(mainContent);
         mainContent.setDebug(false);
