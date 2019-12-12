@@ -55,23 +55,14 @@ public class VisualEchoGame extends GameBeta
 	@Override
 	public void render()
 	{
-		switch (currentScene){
+		switch (currentScene) {
 			case SPLASH:
-				/* Current Scene: Splash
-				 * Transitions from splash to title screen
-				 */
 				if(splashScreen.transitionTo == "Title"){
 					resetScene(TITLE);
 					setActiveScreen(titleScreen);
 				}
 				break;
 			case TITLE:
-				/* Current Scene: Title
-				 * Transitions from title to:
-				 * - Credits
-				 * - Settings
-				 * - SongSelection
-				 */
 				if(titleScreen.transitionTo == "SongSelection"){
 					resetScene(SONG_SELECTION);
 					setActiveScreen(songSelectionScreen);
@@ -86,11 +77,6 @@ public class VisualEchoGame extends GameBeta
 				}
 				break;
 			case SONG_SELECTION:
-				/* Current Scene: SongSelection
-				 * Transitions from SongSelection to:
-				 * - Title
-				 * - Gameplay
-				 */
 				if(songSelectionScreen.transitionTo == "Title"){
 					resetScene(TITLE);
 					setActiveScreen(titleScreen);
@@ -101,18 +87,12 @@ public class VisualEchoGame extends GameBeta
 				}
 				break;
 			case GAMEPLAY:
-				/* Current Scene: Gameplay
-				 * Transitions from Gameplay to Gameresults
-				 */
 				if(gameplayScreen.transitionTo == "GameResults"){
 					resetScene(GAME_RESULTS);
 					setActiveScreen(gameResultsScreen);
 				}
 				break;
 			case GAME_RESULTS:
-				/* Current Scene: Game Results
-				 * Transitions from Game Results to Song Selection
-				 */
 				if(gameResultsScreen.transitionTo == "SongSelection"){
 					resetScene(SONG_SELECTION);
 					setActiveScreen(songSelectionScreen);
@@ -120,28 +100,21 @@ public class VisualEchoGame extends GameBeta
 					resetScene(GAMEPLAY);
 					setActiveScreen(gameplayScreen);
 				}
-
+//
 				break;
 			case SETTINGS:
-				/* Current Scene: Settings
-				 * Transitions from Settings to Title
-				 */
 				if(settingsScreen.transitionTo == "Title"){
 					resetScene(TITLE);
 					setActiveScreen(titleScreen);
 				}
 				break;
 			case CREDITS:
-				/* Current Scene: Credits
-				 * Transitions from Credits to Title
-				 */
 				if(creditsScreen.transitionTo == "Title"){
 					resetScene(TITLE);
 					setActiveScreen(titleScreen);
 				}
 				break;
 		}
-		// Renders only after changing the scene
 		super.render();
 	}
 

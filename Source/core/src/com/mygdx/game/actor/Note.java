@@ -11,7 +11,8 @@ public class Note extends ActorBeta
     private float WIDTH, HEIGHT;
     private Animation noteSpawn;
     private int noteSpawnSize;
-    private Music success, fail;
+    public float animTime;
+    private TapEffect effect;
 
     public Note(float x, float y, Stage s)
     {
@@ -20,14 +21,11 @@ public class Note extends ActorBeta
         HEIGHT = Gdx.graphics.getHeight();
 
         noteSpawnSize = 12;
-        noteSpawn = loadAnimationFromFiles(GetSpritesFromFile("Note", noteSpawnSize), 0.1f, false);
+        noteSpawn = loadAnimationFromFiles(GetSpritesFromFile("Note", noteSpawnSize), 0.07f, false);
         setVisible(false);
         setAnimation(noteSpawn, false);
-
-        success = Gdx.audio.newMusic(Gdx.files.internal("success.wav"));
-        success.setLooping(false);
-        fail = Gdx.audio.newMusic(Gdx.files.internal("fail.wav"));
-        fail.setLooping(false);
+        animTime = 0.07f * 12;
+        effect = new TapEffect(0,0, s);
     }
 
     @Override
@@ -43,35 +41,31 @@ public class Note extends ActorBeta
         {
             if (noteSpawn.getKeyFrameIndex(getElapsedTime()) == noteSpawnSize - 1)
             {
-                PlayMusic(fail);
                 setVisible(false);
             }
         }
     }
 
-    public void Spawn()
+    public void Spawn(float x, float y)
     {
+        setPosition(x,y);
         setVisible(true);
         setAnimation(noteSpawn, false);
     }
 
-    public void Tapped()
+    public int Tapped() // Returns the score you get.
     {
-        if (isVisible())
+        setVisible(false);
+        if (noteSpawn.getKeyFrameIndex(getElapsedTime()) >=  7)
         {
-            if (noteSpawn.getKeyFrameIndex(getElapsedTime()) > 6)
-                PlayMusic(success);
-            else
-                PlayMusic(fail);
-            setVisible(false);
+            effect.Spawn(getX() - 25, getY() - 25);
+            return 10;
         }
-    }
-
-    private void PlayMusic(Music music)
-    {
-        if (music.isPlaying())
-            music.setPosition(0);
-        music.play();
+        if (noteSpawn.getKeyFrameIndex(getElapsedTime()) >=  4)
+        {
+            return 5;
+        }
+        return 2;
     }
 
     private String[] GetSpritesFromFile(String dir, int size)

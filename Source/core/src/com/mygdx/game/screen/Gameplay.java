@@ -1,43 +1,83 @@
 package com.mygdx.game.screen;
-
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.mygdx.game.actor.NextNote;
 import com.mygdx.game.actor.Note;
+import com.mygdx.game.actor.Score;
 import com.mygdx.game.base.ScreenBeta;
-
-import java.sql.Time;
-import java.util.Random;
+import java.util.ArrayList;
 
 public class Gameplay extends ScreenBeta
 {
-    private Note note;
-    private float timer, spawnRate;
+    public String transitionTo;
     private float WIDTH, HEIGHT;
-    private Random random;
-    private int MAXSPAWN = 5;
-    private int spawnCounter = 0;
+    private float startSongAfter, startSongTimer;
+    private Music song;
+    private float animTime, lag;
+    private ArrayList<Note> notes;
+    private ArrayList<NextNote> nextNotes;
+    private float spawnNextNoteBefore;
+    private int nextNoteIndex;
+    private int noteIndex;
+    private int posIndex;
+    private int nextPosIndex;
+    private float[] timeStamps, positions;
+    private int score;
+    private int notesTapped;
+    private Score scoreLabel;
 
     @Override
     public void initialize()
     {
         WIDTH = Gdx.graphics.getWidth();
         HEIGHT = Gdx.graphics.getHeight();
-        timer = 0;
-        spawnRate = 5.0f;
-        note = new Note(100,100, st);
-        note.Spawn();
-        random = new Random();
+        Gdx.app.log("DEBUG", "" + WIDTH + "x" + HEIGHT);
+        song = Gdx.audio.newMusic(Gdx.files.internal("01.FULL TRACKS/02. Neon Trip.mp3"));
+        song.setLooping(false);
+        notes = new ArrayList<>();
+        for (int i = 0; i < 20; i++)
+        {
+            notes.add(new Note(0,0, st));
+        }
+        nextNotes = new ArrayList<>();
+        for (int i = 0; i < 20; i++)
+        {
+            nextNotes.add(new NextNote(0,0, -1, st));
+        }
+        animTime = notes.get(0).animTime;
+
     }
 
     @Override
-    public void show() {
+    public void show()
+    {
         super.show();
-        spawnCounter = 0;
+        startSongAfter = 3.0f;
+        startSongTimer = 0;
+        nextNoteIndex = 0;
+        lag = 0.2f;
+        noteIndex = 0;
+        posIndex = 0;
+        nextPosIndex = 0;
+        spawnNextNoteBefore = 1;
+        score = 0;
+        notesTapped = 0;
+        transitionTo = "";
+        timeStamps = SongData.timeStamps;
+        positions = SongData.positions;
+        scoreLabel = new Score(75, HEIGHT - 150, st);
+        Gdx.app.log("DEBUG", "Timestamps: " + timeStamps.length);
+        Gdx.app.log("DEBUG", "Positions: " + positions.length);
     }
 
     @Override
     public void update(float dt)
     {
-        NoteManager(dt);
+        //NoteManager(dt);
+        StartSong(dt);
+        //ProcessNextNotes();
+        ProcessNotes();
+        EndSong();
     }
 
     @Override
@@ -47,43 +87,138 @@ public class Gameplay extends ScreenBeta
         return super.touchDown(screenX, screenY, pointer, button);
     }
 
+    @Override
+    public void hide()
+    {
+        super.hide();
+    }
+
     private void NoteCollision(float tapX, float tapY)
     {
-        if (note.isVisible())
+        for (int i = 0; i < notes.size(); i++)
         {
-            if (tapX > note.getX() && tapX < note.getX() + note.getWidth())
+            Note thisNote = notes.get(i);
+            if (thisNote.isVisible())
             {
-                if (tapY > note.getY() && tapY < note.getY() + note.getHeight())
+                if (tapX > thisNote.getX() && tapX < thisNote.getX() + thisNote.getWidth())
                 {
-                    note.Tapped();
+                    if (tapY > thisNote.getY() && tapY < thisNote.getY() + thisNote.getHeight())
+                    {
+                        notesTapped++;
+                        score += thisNote.Tapped();
+                        scoreLabel.SetScore( score, (int)( ((float)notesTapped / (float)(noteIndex) * 100) ) );
+                        break;
+                    }
                 }
             }
         }
     }
 
-    private void NoteManager(float dt)
+    private void StartSong(float dt)
     {
-        timer += dt;
-        if (timer >= spawnRate)
+        if (!song.isPlaying())
         {
-            if(spawnCounter > MAXSPAWN)
+            startSongTimer += dt;
+            if (startSongTimer >= startSongAfter)
             {
-                transitionTo = "GameResults";
-            }
-            else{
-                note.setX(random.nextFloat() * (WIDTH - note.getWidth()));
-                note.setY(random.nextFloat() * (HEIGHT - note.getHeight()));
-                note.Spawn();
-                timer = 0;
-                spawnCounter++;
+                StartFrom(0);
             }
         }
     }
 
-    @Override
-    public void hide() {
-        super.hide();
-        spawnCounter = 0;
+    private void EndSong()
+    {
+        if (song.isPlaying() && song.getPosition() >= 211)
+        {
+            song.stop();
+            SongData.accuracy = (int)(((float)notesTapped / (float)timeStamps.length) * 100);
+            SongData.score = score;
+            transitionTo = "GameResults";
+        }
     }
 
+    private void SpawnNote(float x, float y)
+    {
+        for (int i = 0; i < notes.size(); i++)
+        {
+            Note thisNote = notes.get(i);
+            if (!thisNote.isVisible())
+            {
+                thisNote.Spawn(x,y);
+                break;
+            }
+        }
+    }
+
+    private void SpawnNextNote(float x, float y, int index)
+    {
+        for (int i = 0; i < nextNotes.size(); i++)
+        {
+            NextNote thisNote = nextNotes.get(i);
+            if (!thisNote.isVisible())
+            {
+                thisNote.Spawn(x,y);
+                thisNote.index = index;
+                break;
+            }
+        }
+    }
+
+    private void DespawnNextNote(int index)
+    {
+        for (int i = 0; i < nextNotes.size(); i++)
+        {
+            NextNote thisNote = nextNotes.get(i);
+            if (thisNote.index == index)
+            {
+                thisNote.setVisible(false);
+                break;
+            }
+        }
+    }
+
+    private void ProcessNotes()
+    {
+        if (noteIndex < timeStamps.length)
+        {
+            if (song.getPosition() >= (timeStamps[noteIndex] - animTime + lag))
+            {
+                SpawnNote(positions[posIndex], positions[posIndex+1]);
+                DespawnNextNote(noteIndex);
+                noteIndex++;
+                posIndex += 2;
+            }
+        }
+    }
+
+    private void ProcessNextNotes()
+    {
+        if (nextNoteIndex < timeStamps.length)
+        {
+            if (song.getPosition() >= (timeStamps[nextNoteIndex] - animTime + lag - spawnNextNoteBefore))
+            {
+                SpawnNextNote(positions[nextPosIndex] + 100 - 16, positions[nextPosIndex+1] + 100 - 16, nextNoteIndex);
+                nextNoteIndex++;
+                nextPosIndex += 2;
+            }
+        }
+    }
+
+    private void StartFrom(float sec)
+    {
+        while (true)
+        {
+            if (timeStamps[noteIndex] < sec)
+            {
+                noteIndex++;
+                posIndex += 2;
+            }
+            else
+            {
+                break;
+            }
+        }
+        song.setPosition(sec);
+        song.play();
+    }
 }

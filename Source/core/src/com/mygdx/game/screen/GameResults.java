@@ -45,7 +45,7 @@ public final class GameResults extends ScreenBeta {
         titleText = new Label("Performance", sk);
         titleText.setFontScale(3.0f);
 
-        resultText= new Label("86%", sk);
+        resultText= new Label("Accuracy: " + SongData.accuracy + "%\nScore: " + SongData.score, sk);
         resultText.setFontScale(4.0f);
 
         retrySong = new TextButton("Retry", sk);
@@ -84,7 +84,7 @@ public final class GameResults extends ScreenBeta {
         }else if(dice <=0.75f){
             imageAndSound = 3;
         }
-        finalImage = new FinalImage (0, 0, st, WIDTH, HEIGHT, "GameResults/Image" + Integer.toString(imageAndSound) + ".jpg");
+        //finalImage = new FinalImage (0, 0, st, WIDTH, HEIGHT, "GameResults/Image" + Integer.toString(imageAndSound) + ".jpg");
         soundTrack = Gdx.audio.newMusic(Gdx.files.internal("GameResults/Results"+ Integer.toString(imageAndSound) +".mp3"));
         soundTrack.play();
 

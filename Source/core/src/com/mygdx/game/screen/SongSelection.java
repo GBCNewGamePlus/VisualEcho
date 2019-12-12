@@ -53,6 +53,8 @@ public final class SongSelection extends ScreenBeta {
             tapped[i] = false;
             songTitle[i] = new TextButton(songNames[i],Quantum);
             songTitle[i].setStyle(Quantum.get("default",TextButton.TextButtonStyle.class));
+            songTitle[i].setTransform(true);
+            songTitle[i].setScale(2);
             songTitle[i].addListener(new ChangeListener() {
                 @Override
                 public void changed (ChangeEvent event, Actor actor) {
@@ -62,6 +64,8 @@ public final class SongSelection extends ScreenBeta {
             normalDifficulty[i] = new TextButton("Normal",Quantum);
             normalDifficulty[i].setStyle(Quantum.get("default",TextButton.TextButtonStyle.class));
             normalDifficulty[i].setVisible(false);
+            normalDifficulty[i].setTransform(true);
+            normalDifficulty[i].setScale(2);
             normalDifficulty[i].addListener(new ChangeListener() {
                 @Override
                 public void changed (ChangeEvent event, Actor actor) {
@@ -71,6 +75,8 @@ public final class SongSelection extends ScreenBeta {
             expertDifficulty[i] = new TextButton("Expert",Quantum);
             expertDifficulty[i].setStyle(Quantum.get("default",TextButton.TextButtonStyle.class));
             expertDifficulty[i].setVisible(false);
+            expertDifficulty[i].setTransform(true);
+            expertDifficulty[i].setScale(2);
             expertDifficulty[i].addListener(new ChangeListener() {
                 @Override
                 public void changed (ChangeEvent event, Actor actor) {
@@ -79,6 +85,8 @@ public final class SongSelection extends ScreenBeta {
             });
             backButton = new TextButton("Back",Quantum);
             backButton.setStyle(Quantum.get("default",TextButton.TextButtonStyle.class));
+            backButton.setTransform(true);
+            backButton.setScale(2);
 
             songList.add(normalDifficulty[i]).padBottom(padTableItems);
             songList.add(songTitle[i]).padBottom(padTableItems);

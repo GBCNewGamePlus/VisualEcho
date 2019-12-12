@@ -35,9 +35,18 @@ public final class Title extends ScreenBeta {
 
         // Table elements
         gameLogo = new GameLogo(HEIGHT/2.50f, "Title/VisualEchoLogo.png");
+
         songList = new TextButton("Song List", sk);
+        songList.setTransform(true);
+        songList.setScale(2);
+
         settings = new TextButton("Settings", sk);
+        settings.setTransform(true);
+        settings.setScale(2);
+
         credits = new TextButton("Credits", sk);
+        credits.setTransform(true);
+        credits.setScale(2);
 
         // Table
         mainContent = new Table();
