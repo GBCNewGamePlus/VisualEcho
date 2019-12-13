@@ -3,6 +3,7 @@ package com.mygdx.game.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.mygdx.game.base.ScreenBeta;
@@ -14,198 +15,106 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import java.util.Random;
 
 public final class SongSelection extends ScreenBeta {
-    private Skin Quantum;
     private Table songList;
-    private String[] songNames;
-    private TextButton[] normalDifficulty;
-    private ChangeListener[] nDList;
-    private TextButton[] expertDifficulty;
-    private ChangeListener[] eDList;
-    private TextButton[] songTitle;
-    private ChangeListener[] sTList;
-    private TextButton[][] songHolder;
+    private String songName;
+    private TextButton expertDifficulty;
+    private ChangeListener eDList;
+    private TextButton songTitle;
+    private ChangeListener sTList;
+    private TextButton songHolder;
     private TextButton backButton;
     private ChangeListener bBList;
-    private boolean[] tapped;
-    private Music[] soundTrack;
+    private boolean tapped;
+    private Music soundTrack;
+    private Label title;
     @Override
     public void initialize() {
-
-        Quantum = new Skin(Gdx.files.internal("Skin/Quantum UI SCF.json"));
-        songNames = new String[]{"Cyberjazz Nights", "Neon Trip", "Cry No More"};
-        soundTrack = new Music[3];
-        soundTrack[0] = Gdx.audio.newMusic(Gdx.files.internal("01.FULL TRACKS/01. Cyberjazz Nights.mp3"));
-        soundTrack[1] = Gdx.audio.newMusic(Gdx.files.internal("01.FULL TRACKS/02. Neon Trip.mp3"));
-        soundTrack[2] = Gdx.audio.newMusic(Gdx.files.internal("01.FULL TRACKS/03. Cry No More.mp3"));
-        normalDifficulty = new TextButton[3];
-        expertDifficulty = new TextButton[3];
-        nDList = new ChangeListener[3];
-        eDList = new ChangeListener[3];
-        sTList = new ChangeListener[3];
-        songTitle = new TextButton[3];
-        songHolder = new TextButton[3][];
-        tapped = new boolean[3];
+        songName = "Neon Trip";
+        soundTrack = Gdx.audio.newMusic(Gdx.files.internal("01.FULL TRACKS/02. Neon Trip.mp3"));
         float padTableItems = HEIGHT/30.0f;
         songList = new Table();
         songList.setOrigin(Align.top);
         songList.setPosition(WIDTH/2,HEIGHT/2);
-        for (int i = 0; i < songHolder.length; i++){
-            tapped[i] = false;
-            songTitle[i] = new TextButton(songNames[i],Quantum);
-            songTitle[i].setStyle(Quantum.get("default",TextButton.TextButtonStyle.class));
-            songTitle[i].setTransform(true);
-            songTitle[i].setScale(2);
-            songTitle[i].addListener(new ChangeListener() {
-                @Override
-                public void changed (ChangeEvent event, Actor actor) {
+        tapped = false;
 
-                }
-            });
-            normalDifficulty[i] = new TextButton("Normal",Quantum);
-            normalDifficulty[i].setStyle(Quantum.get("default",TextButton.TextButtonStyle.class));
-            normalDifficulty[i].setVisible(false);
-            normalDifficulty[i].setTransform(true);
-            normalDifficulty[i].setScale(2);
-            normalDifficulty[i].addListener(new ChangeListener() {
-                @Override
-                public void changed (ChangeEvent event, Actor actor) {
-
-                }
-            });
-            expertDifficulty[i] = new TextButton("Expert",Quantum);
-            expertDifficulty[i].setStyle(Quantum.get("default",TextButton.TextButtonStyle.class));
-            expertDifficulty[i].setVisible(false);
-            expertDifficulty[i].setTransform(true);
-            expertDifficulty[i].setScale(2);
-            expertDifficulty[i].addListener(new ChangeListener() {
-                @Override
-                public void changed (ChangeEvent event, Actor actor) {
-
-                }
-            });
-            backButton = new TextButton("Back",Quantum);
-            backButton.setStyle(Quantum.get("default",TextButton.TextButtonStyle.class));
-            backButton.setTransform(true);
-            backButton.setScale(2);
-
-            songList.add(normalDifficulty[i]).padBottom(padTableItems);
-            songList.add(songTitle[i]).padBottom(padTableItems);
-            songList.add(expertDifficulty[i]).padBottom(padTableItems);
-            songList.row();
-
-
-        }
-        songList.add(backButton).padBottom(padTableItems);
+        title = new Label("Settings", sk);
+        title.setFontScale(4.0f);
+        songList.add(title).colspan(2).padBottom(2*padTableItems);
         songList.row();
+
+
+        songTitle = new TextButton("Neon Trip",sk);
+        songTitle.setStyle(sk.get("default",TextButton.TextButtonStyle.class));
+        songTitle.addListener(new ChangeListener() {
+            @Override
+            public void changed (ChangeEvent event, Actor actor) {
+
+            }
+        });
+        float originalWidthST = songTitle.getWidth();
+        float originalHeightST = songTitle.getHeight();
+        float rateST = 0.15f * (HEIGHT/originalHeightST);
+        songTitle.getLabel().setFontScale(rateST,rateST);
+        songList.add(songTitle).padBottom(padTableItems).height(originalHeightST*rateST).width(originalWidthST*rateST);
+
+        expertDifficulty = new TextButton("Expert",sk);
+        expertDifficulty.setStyle(sk.get("default",TextButton.TextButtonStyle.class));
+        expertDifficulty.setVisible(false);
+        expertDifficulty.addListener(new ChangeListener() {
+            @Override
+            public void changed (ChangeEvent event, Actor actor) {
+
+            }
+        });
+        float originalWidthED = expertDifficulty.getWidth();
+        float originalHeightED = expertDifficulty.getHeight();
+        float rateED = 0.15f * (HEIGHT/originalHeightED);
+        expertDifficulty.getLabel().setFontScale(rateED,rateED);
+
+        songList.add(expertDifficulty).padBottom(padTableItems).height(originalHeightED*rateED).width(originalWidthED*rateED);
+        songList.row();
+
+        backButton = new TextButton("Back",sk);
+        backButton.setStyle(sk.get("default",TextButton.TextButtonStyle.class));
+        float originalWidthBK = backButton.getWidth();
+        float originalHeightBK = backButton.getHeight();
+        float rateBK = 0.15f * (HEIGHT/originalHeightBK);
+        backButton.getLabel().setFontScale(rateBK,rateBK);
+        songList.add(backButton).colspan(2).height(originalHeightBK*rateBK).width(originalWidthBK*rateBK);
+        songList.row();
+
         st.addActor(songList);
         songList.setDebug(false);
         songList.setVisible(true);
-        songHolder[0] = songTitle;
-        songHolder[1] = normalDifficulty;
-        songHolder[2] = expertDifficulty;
     }
 
     @Override
     public void show() {
         super.show();
-        for (int i = 0; i < 3; i++){
-            normalDifficulty[i].setVisible(false);
-            expertDifficulty[i].setVisible(false);
-            tapped[i] = false;
-        }
-        songTitle[0].addListener(sTList[0] = new ChangeListener() {
+        expertDifficulty.setVisible(false);
+        tapped = false;
+        songTitle.addListener(sTList = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                for (int i = 0; i < 3; i++){
-                    soundTrack[i].stop();
-                    normalDifficulty[i].setVisible(false);
-                    expertDifficulty[i].setVisible(false);
+                soundTrack.stop();
+                expertDifficulty.setVisible(false);
+                tapped = !tapped;
+                expertDifficulty.setVisible(tapped);
+                if (tapped){
+                    soundTrack.setVolume(0.3f);
+                    soundTrack.setLooping(true);
+                    soundTrack.play();
                 }
+            }
+        });
 
-                tapped[0] = !tapped[0];
-                normalDifficulty[0].setVisible(tapped[0]);
-                expertDifficulty[0].setVisible(tapped[0]);
-                if (tapped[0] == true){
-                    soundTrack[0].setVolume(0.3f);
-                    soundTrack[0].setLooping(true);
-                    soundTrack[0].play();
-                }
-            }
-        });
-        songTitle[1].addListener(sTList[1] = new ChangeListener() {
+        expertDifficulty.addListener(eDList = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                for (int i = 0; i < 3; i++){
-                    soundTrack[i].stop();
-                    normalDifficulty[i].setVisible(false);
-                    expertDifficulty[i].setVisible(false);
-                }
+                transitionTo = "Gameplay";
+            }
+        });
 
-                tapped[1] = !tapped[1];
-                normalDifficulty[1].setVisible(tapped[1]);
-                expertDifficulty[1].setVisible(tapped[1]);
-                if (tapped[1] == true){
-                    soundTrack[1].setVolume(0.3f);
-                    soundTrack[1].setLooping(true);
-                    soundTrack[1].play();
-                }
-            }
-        });
-        songTitle[2].addListener(sTList[2] = new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                for (int i = 0; i < 3; i++){
-                    soundTrack[i].stop();
-                    normalDifficulty[i].setVisible(false);
-                    expertDifficulty[i].setVisible(false);
-                }
-
-                tapped[2] = !tapped[2];
-                normalDifficulty[2].setVisible(tapped[2]);
-                expertDifficulty[2].setVisible(tapped[2]);
-                if (tapped[2] == true){
-                    soundTrack[2].setVolume(0.3f);
-                    soundTrack[2].setLooping(true);
-                    soundTrack[2].play();
-                }
-            }
-        });
-        normalDifficulty[0].addListener(nDList[0] = new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                transitionTo = "Gameplay";
-            }
-        });
-        expertDifficulty[0].addListener(eDList[0] = new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                transitionTo = "Gameplay";
-            }
-        });
-        normalDifficulty[1].addListener(nDList[1] = new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                transitionTo = "Gameplay";
-            }
-        });
-        expertDifficulty[1].addListener(eDList[1] = new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                transitionTo = "Gameplay";
-            }
-        });
-        normalDifficulty[2].addListener(nDList[2] = new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                transitionTo = "Gameplay";
-            }
-        });
-        expertDifficulty[2].addListener(eDList[2] = new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                transitionTo = "Gameplay";
-            }
-        });
         backButton.addListener(bBList = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -220,15 +129,11 @@ public final class SongSelection extends ScreenBeta {
     public void hide(){
         super.hide();
         songList.setVisible(false);
-        for (int i = 0; i < 3; i++){
-            soundTrack[i].stop();
-            songTitle[i].removeListener(sTList[i]);
-            normalDifficulty[i].removeListener(nDList[i]);
-            expertDifficulty[i].removeListener(eDList[i]);
-            tapped[i] = false;
-        }
+        soundTrack.stop();
+        songTitle.removeListener(sTList);
+        expertDifficulty.removeListener(eDList);
+        tapped = false;
         backButton.removeListener((bBList));
-
     }
     @Override
     public void update(float dt) {

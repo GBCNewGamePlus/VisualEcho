@@ -39,32 +39,38 @@ public final class GameResults extends ScreenBeta {
     @Override
     public void initialize() {
         random = new Random();
+        results = Gdx.app.getPreferences("VisualEchoPreferences");
+        mainContent = new Table();
+        mainContent.setOrigin(Align.top);
+        mainContent.setPosition(WIDTH/2,HEIGHT/2);
 
         float padTableItems = HEIGHT/30.0f;
         // Table elements
         titleText = new Label("Performance", sk);
         titleText.setFontScale(3.0f);
-
-        resultText= new Label("Accuracy: " + SongData.accuracy + "%\nScore: " + SongData.score, sk);
-        resultText.setFontScale(4.0f);
-
-        retrySong = new TextButton("Retry", sk);
-        back = new TextButton("Back", sk);
-
-        // Table
-        mainContent = new Table();
-        mainContent.setOrigin(Align.top);
-        mainContent.setPosition(WIDTH/2,HEIGHT/2);
-
         mainContent.add(titleText).padBottom(3*padTableItems).colspan(2);
         mainContent.row();
 
+        resultText= new Label("Accuracy: ", sk);
+        resultText.setFontScale(4.0f);
         mainContent.add(resultText).padBottom(3*padTableItems).colspan(2);
         mainContent.row();
 
-        mainContent.add(retrySong);
-        mainContent.add(back);
+        retrySong = new TextButton("Retry", sk);
+        float originalWidthRT = retrySong.getWidth();
+        float originalHeightRT = retrySong.getHeight();
+        float rateRT = 0.15f * (HEIGHT/originalHeightRT);
+        retrySong.getLabel().setFontScale(rateRT,rateRT);
+        mainContent.add(retrySong).height(originalHeightRT*rateRT).width(originalWidthRT*rateRT);
 
+        back = new TextButton("Back", sk);
+        float originalWidthBK = back.getWidth();
+        float originalHeightBK = back.getHeight();
+        float rateBK = 0.15f * (HEIGHT/originalHeightBK);
+        back.getLabel().setFontScale(rateBK,rateBK);
+        mainContent.add(back).height(originalHeightBK*rateBK).width(originalWidthBK*rateBK);
+
+        // Table
         mainContent.setDebug(false);
         mainContent.setVisible(false);
 
@@ -74,6 +80,9 @@ public final class GameResults extends ScreenBeta {
     public void show() {
         super.show();
         mainContent.setVisible(true);
+        int accuracy = results.getInteger("CurrentAccuracy");
+        int score = results.getInteger("CurrentScore");
+        resultText.setText("Accuracy: " + accuracy + "%\nScore: " + score );
 
         float dice = random.nextFloat();
         int imageAndSound = 4;

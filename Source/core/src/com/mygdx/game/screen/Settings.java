@@ -60,12 +60,12 @@ public final class Settings extends ScreenBeta {
         mainContent.add(title).padBottom(3*padTableItems).colspan(2);
         mainContent.row();
 
-        mainContent.add(vibrationLabel).padBottom(padTableItems);
-        mainContent.add(vibration).height(0.05f*HEIGHT).width(0.05f*HEIGHT).padBottom(padTableItems);
-        mainContent.row();
-
         mainContent.add(latencyLabel).padBottom(3*padTableItems);
         mainContent.add(latency).padBottom(3*padTableItems).height(0.05f*HEIGHT);
+        mainContent.row();
+
+        mainContent.add(vibrationLabel).padBottom(padTableItems);
+        mainContent.add(vibration).height(0.05f*HEIGHT).width(0.05f*HEIGHT).padBottom(padTableItems);
         mainContent.row();
 
         mainContent.add(back).colspan(2).height(originalHeightBK*rateBK).width(originalWidthBK*rateBK);

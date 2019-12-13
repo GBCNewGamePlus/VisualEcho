@@ -1,5 +1,6 @@
 package com.mygdx.game.screen;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Music;
 import com.mygdx.game.actor.NextNote;
 import com.mygdx.game.actor.Note;
@@ -25,10 +26,13 @@ public class Gameplay extends ScreenBeta
     private int score;
     private int notesTapped;
     private Score scoreLabel;
+    private Preferences prefs;
+    private boolean showNote;
 
     @Override
     public void initialize()
     {
+        prefs = Gdx.app.getPreferences("VisualEchoPreferences");
         WIDTH = Gdx.graphics.getWidth();
         HEIGHT = Gdx.graphics.getHeight();
         Gdx.app.log("DEBUG", "" + WIDTH + "x" + HEIGHT);
@@ -55,7 +59,6 @@ public class Gameplay extends ScreenBeta
         startSongAfter = 3.0f;
         startSongTimer = 0;
         nextNoteIndex = 0;
-        lag = 0.2f;
         noteIndex = 0;
         posIndex = 0;
         nextPosIndex = 0;
@@ -68,6 +71,16 @@ public class Gameplay extends ScreenBeta
         scoreLabel = new Score(75, HEIGHT - 150, st);
         Gdx.app.log("DEBUG", "Timestamps: " + timeStamps.length);
         Gdx.app.log("DEBUG", "Positions: " + positions.length);
+
+        showNote = true;
+        if(prefs.contains("ShowNextNote")){
+            showNote = prefs.getBoolean("ShowNextNote");
+        }
+        lag = 0.2f;
+        if(prefs.contains("Latency")){
+            lag = prefs.getFloat("Latency");
+        }
+
     }
 
     @Override
@@ -131,8 +144,9 @@ public class Gameplay extends ScreenBeta
         if (song.isPlaying() && song.getPosition() >= 211)
         {
             song.stop();
-            SongData.accuracy = (int)(((float)notesTapped / (float)timeStamps.length) * 100);
-            SongData.score = score;
+            prefs.putInteger("CurrentAccuracy", (int)(((float)notesTapped / (float)timeStamps.length) * 100));
+            prefs.putInteger("CurrentScore", score);
+            prefs.flush();
             transitionTo = "GameResults";
         }
     }
